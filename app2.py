@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, jsonify
-from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import os
+import tensorflow as tf
 
 app = Flask(__name__)
 
-# Load the Keras model
-model = load_model("keras_model.h5")
+# Define custom objects for loading the model
+custom_objects = {'DepthwiseConv2D': tf.keras.layers.DepthwiseConv2D}
+
+# Load the Keras model using custom objects
+model = tf.keras.models.load_model('keras_model.h5', custom_objects=custom_objects)
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
