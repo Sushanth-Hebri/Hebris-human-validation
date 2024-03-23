@@ -1,8 +1,8 @@
+import tensorflow as tf
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
 import numpy as np
 import os
-import tensorflow as tf
 
 app = Flask(__name__)
 
