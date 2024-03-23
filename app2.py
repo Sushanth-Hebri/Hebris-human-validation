@@ -1,22 +1,13 @@
-import tensorflow as tf
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
 import numpy as np
 import os
+import tensorflow as tf
 
 app = Flask(__name__)
 
-# Load the Keras model using custom objects without groups argument
-custom_objects = {'DepthwiseConv2D': tf.keras.layers.DepthwiseConv2D}
-
-# Function to remove unrecognized arguments before deserialization
-def remove_unrecognized_args(config_dict, *args_to_remove):
-    return {key: value for key, value in config_dict.items() if key not in args_to_remove}
-
-# Load the Keras model using custom objects with groups removed from config
-model_config = tf.keras.models.load_model('keras_model.h5').get_config()
-model_config = remove_unrecognized_args(model_config, 'groups')
-model = tf.keras.models.Model.from_config(model_config, custom_objects=custom_objects)
+# Load the Keras model
+model = tf.keras.models.load_model('keras_model.h5')
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
@@ -67,9 +58,10 @@ def predict():
     prediction = model.predict(image_data)
     predicted_class_index = np.argmax(prediction)
     predicted_class_name = class_names[predicted_class_index]
+    
 
     # Check if predicted class is "male" or "female" and return "human"; otherwise return "other"
-    if predicted_class_name.lower() in ['male', 'female']:
+    if predicted_class_name in ['0 male', '1 female']:
         predicted_class_name = 'human'
     else:
         predicted_class_name = 'other'
