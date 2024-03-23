@@ -6,11 +6,36 @@ import tensorflow as tf
 
 app = Flask(__name__)
 
-# Define custom objects for loading the model
-custom_objects = {'DepthwiseConv2D': tf.keras.layers.DepthwiseConv2D}
+# Define the custom DepthwiseConv2D layer with the provided config
+class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
+    def __init__(self, **kwargs):
+        config = {
+            'name': 'expanded_conv_depthwise',
+            'trainable': True,
+            'dtype': 'float32',
+            'kernel_size': [3, 3],
+            'strides': [1, 1],
+            'padding': 'same',
+            'data_format': 'channels_last',
+            'dilation_rate': [1, 1],
+            'activation': 'linear',
+            'use_bias': False,
+            'bias_initializer': {'class_name': 'Zeros', 'config': {}},
+            'bias_regularizer': None,
+            'activity_regularizer': None,
+            'bias_constraint': None,
+            'depth_multiplier': 1,
+            'depthwise_initializer': {
+                'class_name': 'VarianceScaling',
+                'config': {'scale': 1, 'mode': 'fan_avg', 'distribution': 'uniform', 'seed': None}
+            },
+            'depthwise_regularizer': None,
+            'depthwise_constraint': None
+        }
+        super().__init__(**config)
 
-# Load the Keras model using custom objects
-model = tf.keras.models.load_model('keras_model.h5', custom_objects=custom_objects)
+# Load the Keras model using custom objects with the custom DepthwiseConv2D layer
+model = tf.keras.models.load_model('keras_model.h5', custom_objects={'CustomDepthwiseConv2D': CustomDepthwiseConv2D})
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
