@@ -6,8 +6,11 @@ import tensorflow as tf
 
 app = Flask(__name__)
 
-# Load the Keras model
-model = tf.keras.models.load_model('keras_model.h5')
+# Define custom objects for loading the model
+custom_objects = {'DepthwiseConv2D': tf.keras.layers.DepthwiseConv2D}
+
+# Load the Keras model using custom objects
+model = tf.keras.models.load_model('keras_model.h5', custom_objects=custom_objects)
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
@@ -58,10 +61,9 @@ def predict():
     prediction = model.predict(image_data)
     predicted_class_index = np.argmax(prediction)
     predicted_class_name = class_names[predicted_class_index]
-    
 
     # Check if predicted class is "male" or "female" and return "human"; otherwise return "other"
-    if predicted_class_name in ['0 male', '1 female']:
+    if predicted_class_name.lower() in ['male', 'female']:
         predicted_class_name = 'human'
     else:
         predicted_class_name = 'other'
