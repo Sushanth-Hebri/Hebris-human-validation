@@ -6,8 +6,17 @@ import os
 
 app = Flask(__name__)
 
-# Load the Keras model
-model = tf.keras.models.load_model('keras_model.h5')
+# Load the Keras model using custom objects without groups argument
+custom_objects = {'DepthwiseConv2D': tf.keras.layers.DepthwiseConv2D}
+
+# Function to remove unrecognized arguments before deserialization
+def remove_unrecognized_args(config_dict, *args_to_remove):
+    return {key: value for key, value in config_dict.items() if key not in args_to_remove}
+
+# Load the Keras model using custom objects with groups removed from config
+model_config = tf.keras.models.load_model('keras_model.h5').get_config()
+model_config = remove_unrecognized_args(model_config, 'groups')
+model = tf.keras.models.Model.from_config(model_config, custom_objects=custom_objects)
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
