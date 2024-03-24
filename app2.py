@@ -6,36 +6,8 @@ import tensorflow as tf
 
 app = Flask(__name__)
 
-# Define the custom DepthwiseConv2D layer with the provided config
-class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
-    def __init__(self, **kwargs):
-        config = {
-            'name': 'expanded_conv_depthwise',
-            'trainable': True,
-            'dtype': 'float32',
-            'kernel_size': [3, 3],
-            'strides': [1, 1],
-            'padding': 'same',
-            'data_format': 'channels_last',
-            'dilation_rate': [1, 1],
-            'activation': 'linear',
-            'use_bias': False,
-            'bias_initializer': {'class_name': 'Zeros', 'config': {}},
-            'bias_regularizer': None,
-            'activity_regularizer': None,
-            'bias_constraint': None,
-            'depth_multiplier': 1,
-            'depthwise_initializer': {
-                'class_name': 'VarianceScaling',
-                'config': {'scale': 1, 'mode': 'fan_avg', 'distribution': 'uniform', 'seed': None}
-            },
-            'depthwise_regularizer': None,
-            'depthwise_constraint': None
-        }
-        super().__init__(**config)
-
-# Load the Keras model using custom objects with the custom DepthwiseConv2D layer
-model = tf.keras.models.load_model('keras_model.h5', custom_objects={'CustomDepthwiseConv2D': CustomDepthwiseConv2D})
+# Load the Keras model
+model = tf.keras.models.load_model('keras_model.h5')
 
 # Load the labels from the text file
 with open("labels.txt", "r") as file:
@@ -86,9 +58,10 @@ def predict():
     prediction = model.predict(image_data)
     predicted_class_index = np.argmax(prediction)
     predicted_class_name = class_names[predicted_class_index]
+    
 
     # Check if predicted class is "male" or "female" and return "human"; otherwise return "other"
-    if predicted_class_name.lower() in ['male', 'female']:
+    if predicted_class_name in ['0 male', '1 female']:
         predicted_class_name = 'human'
     else:
         predicted_class_name = 'other'
