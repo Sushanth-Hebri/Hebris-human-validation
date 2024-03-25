@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from PIL import Image
 import numpy as np
 import os
@@ -28,11 +28,6 @@ def preprocess_image(image_path, target_size=(224, 224)):
     image = np.expand_dims(image, axis=0)  # Add batch dimension
     return image
 
-# Render the HTML form for image upload
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
-
 # API endpoint for image classification
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -58,7 +53,6 @@ def predict():
     prediction = model.predict(image_data)
     predicted_class_index = np.argmax(prediction)
     predicted_class_name = class_names[predicted_class_index]
-    
 
     # Check if predicted class is "male" or "female" and return "human"; otherwise return "other"
     if predicted_class_name in ['0 male', '1 female']:
@@ -66,7 +60,7 @@ def predict():
     else:
         predicted_class_name = 'other'
 
-    # Return predicted class as response
+    # Return predicted class as JSON response
     return jsonify({'predicted_class': predicted_class_name})
 
 if __name__ == '__main__':
