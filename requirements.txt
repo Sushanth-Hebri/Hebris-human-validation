@@ -1,6 +1,6 @@
 Flask
 Pillow
-keras
+keras==2.9
 numpy
 tensorflow==2.9
 waitress
