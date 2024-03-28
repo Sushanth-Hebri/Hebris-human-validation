@@ -5,3 +5,4 @@ numpy
 tensorflow
 waitress
 flask_cors
+joblib
