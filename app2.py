@@ -5,32 +5,19 @@ import os
 import io
 from flask_cors import CORS
 import tensorflow as tf
+from waitress import serve  # Import Waitress
 
 app = Flask(__name__)
-
-# Get the directory of the current file
-script_dir = os.path.dirname(os.path.realpath(__file__))
+CORS(app)  # Enable CORS for the Flask app
 
 # Load the Keras model
-model_path = os.path.join(script_dir, 'keras_model.h5')
-try:
-    model = tf.keras.models.load_model(model_path)
-except Exception as e:
-    error_message = f'Error loading the model: {str(e)}'
-    print(error_message)
-    app.logger.error(error_message)
-    raise
+model_path = 'keras_model.h5'  # Adjust path if needed
+model = tf.keras.models.load_model(model_path)
 
 # Load the labels from the text file
-labels_path = os.path.join(script_dir, 'labels.txt')
-try:
-    with open(labels_path, "r") as file:
-        class_names = [name.strip() for name in file.readlines()]
-except Exception as e:
-    error_message = f'Error loading the labels: {str(e)}'
-    print(error_message)
-    app.logger.error(error_message)
-    raise
+labels_path = 'labels.txt'  # Adjust path if needed
+with open(labels_path, "r") as file:
+    class_names = [name.strip() for name in file.readlines()]
 
 # Function to preprocess the image
 def preprocess_image(image_bytes, target_size=(224, 224)):
@@ -87,7 +74,6 @@ def predict():
     except Exception as e:
         error_message = f'Error predicting image: {str(e)}'
         print(error_message)
-        app.logger.error(error_message)
         return jsonify({'error': error_message})
 
 # Route for the / endpoint
@@ -96,4 +82,5 @@ def hello():
     return 'Hello'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use Waitress to serve the Flask app
+    serve(app, host="0.0.0.0", port=8080)
