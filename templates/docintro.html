@@ -223,17 +223,17 @@
 
         <div class="valid">
             <div>
-                <img src="elon.jpeg" alt="Image 1">
+                <img src="{{ url_for('static', filename='elon.jpeg') }}" alt="Image 1">
                 <div class="tooltip">Green - Human</div>
                 <div class="caption">{ "predicted_class": "human" }</div>
             </div>
             <div>
-                <img src="ai-gal.jpg" alt="Image 2">
+                <img src="{{ url_for('static', filename='ai-gal.jpg') }}" alt="Image 2">
                 <div class="tooltip">Red - Other</div>
                 <div class="caption">{ "predicted_class": "human" }</div>
             </div>
             <div>
-                <img src="pexels-misael-garcia-1707820.jpg" alt="Image 2">
+                <img src="{{ url_for('static', filename='pexels-misael-garcia-1707820.jpg') }}" alt="Image 2">
                 <div class="tooltip">Red - Other</div>
                 <div class="caption">{ "predicted_class": "other" }</div>
             </div>
