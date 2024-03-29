@@ -121,13 +121,13 @@
         <h2>Hebris V1.0</h2>
 
         <div class="section">
-            <h2>Endpoint: https://hebris-human-validation.onrender.com/detect</h2>
+            <h2>Endpoint: https://hebris-human-validation.onrender.com/predict</h2>
             <p>Detects whether an uploaded image is valid image of human</p>
             <h3>Request:</h3>
-            <p>POST /detect</p>
+            <p>POST /predict</p>
             <p>Form Data:</p>
             <code id="copyCode">
-                &lt;form action="https://hebris-human-validation.onrender.com/detect" method="post" enctype="multipart/form-data"&gt;<br>
+                &lt;form action="https://hebris-human-validation.onrender.com/predict" method="post" enctype="multipart/form-data"&gt;<br>
                 &nbsp;&nbsp;&lt;input type="file" name="image" accept="image/*" required&gt;<br>
                 &nbsp;&nbsp;&lt;button type="submit"&gt;Detect&lt;/button&gt;<br>
                 &lt;/form&gt;
@@ -151,7 +151,7 @@
                     const fileInput = document.getElementById('profileImageInput');
                     const formData = new FormData();
                     formData.append('image', fileInput.files[0]);
-                    fetch('/detect', {
+                    fetch('/predict', {
                         method: 'POST',
                         body: formData
                     })
@@ -167,7 +167,7 @@
                     const imageUrl = 'https://example.com/security-camera/image.jpg';
                     const formData = new FormData();
                     formData.append('image', imageUrl);
-                    fetch('/detect', {
+                    fetch('/predict', {
                         method: 'POST',
                         body: formData
                     })
@@ -185,7 +185,7 @@
                     const fileInput = document.getElementById('profileImageInput');
                     const formData = new FormData();
                     formData.append('image', fileInput.files[0]);
-                    fetch('/detect', {
+                    fetch('/predict', {
                         method: 'POST',
                         body: formData
                     })
@@ -201,7 +201,7 @@
                     const fileInput = document.getElementById('profileImageInput');
                     const formData = new FormData();
                     formData.append('image', fileInput.files[0]);
-                    fetch('/detect', {
+                    fetch('/predict', {
                         method: 'POST',
                         body: formData
                     })
