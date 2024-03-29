@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify ,render_template
 from PIL import Image
 import numpy as np
 import os
@@ -79,7 +79,7 @@ def predict():
 # Route for the / endpoint
 @app.route('/', methods=['GET'])
 def hello():
-    return 'Hello'
+    return render_template('docintro.html')
 
 if __name__ == '__main__':
     # Use Waitress to serve the Flask app
