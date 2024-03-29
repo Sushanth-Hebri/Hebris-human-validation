@@ -2,7 +2,7 @@ Flask
 Pillow==8.3.2
 keras==2.9
 numpy
-tensorflow==2.8.0
+tensorflow
 waitress
 flask_cors
 joblib
