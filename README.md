@@ -1,4 +1,5 @@
 # Hebris-human-validation
+<img src="https://profile-counter.glitch.me/sushanthhebri2/count.svg" alt="hit counter" align="center">
 
 This API is designed to verify whether an uploaded image contains a human or not. It uses machine learning algorithms to analyze the image and determine if it contains a human profile picture.
 
